@@ -6,7 +6,6 @@ import os
 photo_folder = 'C:\\Projects\\AAS\\uploads\\photos\\'
 facial_encodings_folder = 'C:\\Projects\\AAS\\uploads\\encodings\\'
 
-cap = cv2.VideoCapture(0,cv2.CAP_DSHOW)
 
 def encoding_of_enrolled_person(name,image):
 	enroll_encoding=[]
@@ -17,24 +16,5 @@ def encoding_of_enrolled_person(name,image):
 	with open(facial_encodings_folder+name+'.txt','wb') as fp:
 		pickle.dump(enroll_encoding,fp)
 	f.close
-	
-    
-    
-# def enroll_via_camera(name):
-# 	while True:
-# 		ret,frame=cap.read()
-# 		cv2.imshow('Enrolling new attendee',frame)
-# 		k=cv2.waitKey(1)
-# 		if k & 0xFF==ord('y'):
-# 			cv2.imwrite(photo_folder+name+'.jpg',frame)
-# 			encoding_of_enrolled_person(name,photo_folder+name+'.jpg')
-# 			cv2.destroyAllWindows()
-# 			break
-# 		if k& 0xFF==ord('q'):
-# 			print('quitting')
-# 			cv2.destroyAllWindows()
-# 			break
-# 	cap.release()
-# 	email=input("Enter email address: ")
 
 

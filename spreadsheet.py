@@ -26,19 +26,8 @@ def enroll_person_to_sheet(name, email):
     sheet.update_cell(nrows+1, 3, pin)
     em.email_pin(email, pin)
 
-
-def mark_all_absent():
-    now = datetime.datetime.now()
-    date = now.strftime('%m/%d/%Y').replace('/0', '/')
-    if (date[0] == '0'):
-        date = date[1:]
-    datecell = sheet.find(date)
-    nrows = len(sheet.col_values(1))
-    for row in range(2, nrows+1):
-        sheet.update_cell(row, datecell.col, 'absent')
-
-
 def write_to_sheet(name):
+    
     now = datetime.datetime.now()
     date = now.strftime('%m/%d/%Y').replace('/0', '/')
     if (date[0] == '0'):
@@ -47,7 +36,8 @@ def write_to_sheet(name):
     namecell = sheet.find(name)
     datecell = sheet.find(date)
 
-    if (sheet.cell(namecell.row, datecell.col).value == 'absent'):
+
+    if (sheet.cell(namecell.row, datecell.col).value == 'absent' or sheet.cell(namecell.row, datecell.col).value == None):
         if (time < max_intime):
             sheet.update_cell(namecell.row, datecell.col, 'present')
             print('recorded')
@@ -59,3 +49,4 @@ def write_to_sheet(name):
             em.send_email(sheet.cell(namecell.row, 2).value, "absent")
     else:
         print('already recorded')
+        return
