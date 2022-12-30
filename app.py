@@ -24,7 +24,7 @@ def enrollUser():
     image.save(os.path.join(app.config['photo_folder'], newimage))
 
     # Encoding the Image and Saving It
-    encoding_of_enrolled_person(name, photo_folder + newimage)
+    encoding_of_enrolled_person(name.replace(' ' , '_') , photo_folder + newimage)
 
     # Saving the name and email into the spreadsheet
     spreadsheet.enroll_person_to_sheet(name, email)
