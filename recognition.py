@@ -30,7 +30,8 @@ def checkRecognition(imgSrc):
     load_facial_encodings_and_names_from_memory()
 
     frame = cv2.imread(
-        imgSrc, cv2.IMREAD_UNCHANGED)
+        imgSrc)
+
 
     while True:
 

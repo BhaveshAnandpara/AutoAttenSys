@@ -1,4 +1,5 @@
 from flask import Flask,  request
+from flask_cors import CORS
 from enroll import encoding_of_enrolled_person
 import os
 import spreadsheet
@@ -10,6 +11,14 @@ frame_folder = 'C:\\Projects\\AAS\\uploads\\frames\\'
 
 
 app = Flask("__main__")
+
+@app.after_request
+def after_request(response):
+  response.headers.add('Access-Control-Allow-Origin', '*')
+  response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+  response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+  return response
+
 app.config['photo_folder'] = photo_folder
 app.config['frame_folder'] = frame_folder
 
@@ -40,11 +49,16 @@ def enrollUser():
 @app.route('/presentee', methods=['POST'])
 def presentee():
     frame = request.files['frame']
+    print(request.files['frame'])
     t = time.localtime()
     current_time = time.strftime("%H:%M:%S", t)
     newframe = current_time.replace(':' , '_') + '.jpeg'
     frame.save(os.path.join(app.config['frame_folder'], newframe))
     checkRecognition( frame_folder + newframe)
+
+@app.route('/check', methods=['POST'])
+def check():
+    return "Works"
 
 
 if __name__ == '__main__':

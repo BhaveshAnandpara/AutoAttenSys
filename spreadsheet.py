@@ -50,3 +50,31 @@ def write_to_sheet(name):
     else:
         print('already recorded')
         return
+
+def mark_absent():
+    
+    now = datetime.datetime.now()
+    date = now.strftime('%m/%d/%Y').replace('/0', '/')
+    if (date[0] == '0'):
+        date = date[1:]
+    time = now.strftime('%H:%M:%S')
+    datecell = sheet.find(date)
+
+    print( sheet.col_count )
+
+mark_absent()
+
+
+    # if (sheet.cell(datecell.col).value == 'absent' or sheet.cell(namecell.row, datecell.col).value == None):
+    #     if (time < max_intime):
+    #         sheet.update_cell(namecell.row, datecell.col, 'present')
+    #         print('recorded')
+    #         em.send_email(sheet.cell(namecell.row, 2).value, "present")
+
+    #     else:
+    #         # sheet.update_cell(namecell.row,datecell.col,'late')
+    #         print('late')
+    #         em.send_email(sheet.cell(namecell.row, 2).value, "absent")
+    # else:
+    #     print('already recorded')
+    #     return
