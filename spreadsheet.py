@@ -17,6 +17,8 @@ sheet = client.open("Face recognition").sheet1
 
 max_intime = '21:00:00'
 
+presentStudents = []
+
 
 def enroll_person_to_sheet(name, email):
     nrows = len(sheet.col_values(1))
@@ -36,11 +38,15 @@ def write_to_sheet(name):
     namecell = sheet.find(name)
     datecell = sheet.find(date)
 
+    if name in presentStudents:
+        return
+
 
     if (sheet.cell(namecell.row, datecell.col).value == 'absent' or sheet.cell(namecell.row, datecell.col).value == None):
         if (time < max_intime):
             sheet.update_cell(namecell.row, datecell.col, 'present')
-            print('recorded')
+            print('%s is Present' % name)
+            presentStudents.append( name )
             em.send_email(sheet.cell(namecell.row, 2).value, "present")
 
         else:
@@ -60,21 +66,8 @@ def mark_absent():
     time = now.strftime('%H:%M:%S')
     datecell = sheet.find(date)
 
-    print( sheet.col_count )
+    for i in range( 2 ,7 ):
+         if sheet.cell( i , datecell.col ).value == None :
+            sheet.update_cell( i , datecell.col ,  'absent' )
 
-mark_absent()
 
-
-    # if (sheet.cell(datecell.col).value == 'absent' or sheet.cell(namecell.row, datecell.col).value == None):
-    #     if (time < max_intime):
-    #         sheet.update_cell(namecell.row, datecell.col, 'present')
-    #         print('recorded')
-    #         em.send_email(sheet.cell(namecell.row, 2).value, "present")
-
-    #     else:
-    #         # sheet.update_cell(namecell.row,datecell.col,'late')
-    #         print('late')
-    #         em.send_email(sheet.cell(namecell.row, 2).value, "absent")
-    # else:
-    #     print('already recorded')
-    #     return

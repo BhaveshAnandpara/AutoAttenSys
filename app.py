@@ -48,17 +48,32 @@ def enrollUser():
 
 @app.route('/presentee', methods=['POST'])
 def presentee():
+    print('Frame Received')
     frame = request.files['frame']
-    print(request.files['frame'])
     t = time.localtime()
     current_time = time.strftime("%H:%M:%S", t)
     newframe = current_time.replace(':' , '_') + '.jpeg'
     frame.save(os.path.join(app.config['frame_folder'], newframe))
-    checkRecognition( frame_folder + newframe)
+    return checkRecognition( frame_folder + newframe)
 
 @app.route('/check', methods=['POST'])
 def check():
     return "Works"
+
+@app.route('/stopProcess')
+def stopProcess():
+
+    for file_name in os.listdir(frame_folder):
+    # construct full file path
+     file = frame_folder + file_name
+     if os.path.isfile(file):
+        print('Deleting file:', file)
+        os.remove(file)
+
+    spreadsheet.mark_absent()
+    return "Frames Deleted"
+
+
 
 
 if __name__ == '__main__':
