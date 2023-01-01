@@ -30,15 +30,20 @@ def enrollUser():
     email = request.form['email']
     image = request.files['image']
 
+
     # Setting Name of Image as of User Name
-    newimage = name.replace(' ', '_') + "."+(image.filename.split('.')[-1])
+    newimage = name.replace(' ', '_') + '.jpeg'
 
     # Saving Image in Folder
     image.save(os.path.join(app.config['photo_folder'], newimage))
 
     # Encoding the Image and Saving It
-    encoding_of_enrolled_person(name.replace(
+    result = encoding_of_enrolled_person(name.replace(
         ' ', '_'), photo_folder + newimage)
+
+    if result == 'error':
+        print('error')
+        return { 'msg' :'error'}
 
     # Saving the name and email into the spreadsheet
     spreadsheet.enroll_person_to_sheet(name, email)
